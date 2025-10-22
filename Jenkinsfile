@@ -8,17 +8,22 @@ pipeline {
                     echo "Running Selenium Tests using pytest"
 
                     // Install Python dependencies
-                    bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install -r requirements.txt'
+                    //bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install -r requirements.txt'
+                    bat '"C:\\Users\\eruku\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install --upgrade pip'
+                    bat '"C:\\Users\\eruku\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install -r requirements.txt'
+                    bat 'start /B "" "C:\\Users\\eruku\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" app.py'
+                    bat '"C:\\Users\\eruku\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pytest -v'
+
 
 
                     //  Start Flask app in background
-                    bat 'start /B "C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" app.py'
-                    bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest -v'
+                    //bat 'start /B "C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" app.py'
+                    //bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest -v'
 
 
                     // Run tests using pytest
                     
-                    bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest -v'
+                    //bat '"C:\\Users\\jyoth\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest -v'
             }
         }
 
