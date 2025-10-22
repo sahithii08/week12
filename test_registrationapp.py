@@ -1,9 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import pytest
 
+# Fixture for setup and teardown of WebDriver
 @pytest.fixture
 def setup_teardown():
     chrome_options = Options()
@@ -11,13 +15,15 @@ def setup_teardown():
     chrome_options.add_argument("--headless")  # Run in Jenkins
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    
-    # Automatically get the correct ChromeDriver version for your Chrome
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+
+    # Automatically install correct ChromeDriver version
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=chrome_options
     )
-    
+
     yield driver
     driver.quit()
 
@@ -28,6 +34,7 @@ def get_alert_text(driver):
     text = alert.text
     alert.accept()
     return text
+
 
 # Test 1: Empty username
 def test_empty_username(setup_teardown):
@@ -41,6 +48,7 @@ def test_empty_username(setup_teardown):
     alert_text = get_alert_text(driver)
     assert alert_text == "Username cannot be empty."
 
+
 # Test 2: Empty password
 def test_empty_password(setup_teardown):
     driver = setup_teardown
@@ -52,6 +60,7 @@ def test_empty_password(setup_teardown):
 
     alert_text = get_alert_text(driver)
     assert alert_text == "Password cannot be empty."
+
 
 # Test 3: Password too short
 def test_short_password(setup_teardown):
@@ -65,6 +74,7 @@ def test_short_password(setup_teardown):
     alert_text = get_alert_text(driver)
     assert alert_text == "Password must be at least 6 characters long."
 
+
 # Test 4: Valid input — should redirect to greeting.html
 def test_valid_input(setup_teardown):
     driver = setup_teardown
@@ -74,7 +84,7 @@ def test_valid_input(setup_teardown):
     driver.find_element(By.NAME, "pwd").send_keys("abc123")
     driver.find_element(By.NAME, "sb").click()
 
-    # Wait for redirect and body text
+    # Wait for redirect to /result
     WebDriverWait(driver, 5).until(
         EC.url_contains("/result")
     )
