@@ -1,0 +1,20 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: week12-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: week12
+  template:
+    metadata:
+      labels:
+        app: week12
+    spec:
+      containers:
+        - name: week12-container
+          image: dhanihaneesha/week12:v1
+          ports:
+            - containerPort: 5000
