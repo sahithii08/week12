@@ -1,29 +1,26 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+import pytest
 
-# Fixture for setting up and tearing down the driver
 @pytest.fixture
 def setup_teardown():
-    from selenium.webdriver.chrome.options import Options
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--headless")  # Run in Jenkins
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-
+    
+    # Automatically get the correct ChromeDriver version for your Chrome
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=chrome_options
     )
-
+    
     yield driver
     driver.quit()
+
 
 # Helper to get alert text safely
 def get_alert_text(driver):
